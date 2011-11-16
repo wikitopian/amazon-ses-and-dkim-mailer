@@ -4,7 +4,7 @@ Donate link: http://wt.is/4g
 Tags: Amazon, SES, DKIM, email, smtp, gmail, google, apps, sendmail, wp_mail, phpmailer, outgoing mail, tls, ssl, security, privacy, wp-phpmailer, coffee2code, configure-smtp, anatta
 Requires at least: 3.0
 Tested up to: 3.3
-Stable tag: 3.3
+Stable tag: 1.0
 Version: 1.0
 
 Configure mailing via Amazon SES or SMTP in with DKIM signing in WordPress, including support for SMTP over SSL/TLS (such as GMail), 
