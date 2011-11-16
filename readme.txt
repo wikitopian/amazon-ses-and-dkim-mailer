@@ -7,7 +7,7 @@ Tested up to: 3.3
 Stable tag: 1.0.2
 Version: 1.0.2
 
-Configure mailing via Amazon SES or SMTP in with DKIM signing in WordPress, including support for SMTP over SSL/TLS (such as GMail). 
+Configure mailing via Amazon SES or SMTP with DKIM signing in WordPress, including support for SMTP over SSL/TLS (such as GMail). 
 
 == Description ==
 
@@ -16,17 +16,20 @@ This plugin from [Anatta®](http://www.anatta.com) adds Amazon SES, DKIM and thi
 The plugin provides the ability to configure the following;
 
 **Amazon SES**:
+
 * Amazon AWS access key and secret key
 * Amazon SES Validated 'From:' address
 * 'From:' Sender Name
 
 **DKIM**:
+
 * DKIM private key
 * DKIM private key password
 * DKIM domain
 * DKIM selector
 
 **SMTP (if not using SES)**:
+
 * SMTP host name
 * SMTP port number
 * If SMTPAuth (authentication) should be used.
@@ -92,7 +95,8 @@ Brandon Checketts has an excellent [online tool](http://www.brandonchecketts.com
 If your settings worked, you should receive the test e-mail at the e-mail address associated with your WordPress blog user account.  That e-mail contains a time-stamp which was reported to you by the plugin when the e-mail was sent.  If you are trying out various setting values, be sure to record what your settings were and what the time-stamp was when sending with those settings.
 
 = Why am I getting this error when attempting to send a test message: SMTP Error: Could not connect to SMTP host? = There are a number of reasons you could be getting this error:
-1. Your server (or a router to which it is connected) may be blocking all outgoing SMTP traffic.
+
+1. Your server or its router, firewall or ISP may be blocking all outgoing SMTP traffic (particularly common with port 25).
 2. Your mail server may be configured to allow SMTP connections only from certain servers.
 3. You have supplied incorrect server settings (hostname, port number, secure protocol type).
 
