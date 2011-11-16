@@ -10,7 +10,6 @@ Version: 1.0.2
 Plugin URI: http://www.anatta.com/tools/amazon-ses-with-dkim-support-wordpress-plugin
 Author: Anatta (Nick Murray)
 Author URI: http://www.anatta.com/about/nick-murray
-Text Domain: configure-mailer
 Description: Configure Amazon AES mailing in WordPress, including support for sending e-mail via SSL/TLS (such as GMail).
 
 Compatible with WordPress 3.0+, 3.1+, 3.2+, 3.3
@@ -46,11 +45,11 @@ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRA
 IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-if ( ! class_exists( 'c2c_ConfigureSMTP' ) ) :
+if ( ! class_exists( 'c2c_ConfigureAES_DKIM_SMTP' ) ) :
 
 require_once( 'c2c-plugin.php' );
 
-class c2c_ConfigureSMTP extends C2C_Plugin_023 {
+class c2c_ConfigureAES_DKIM_SMTP extends C2C_Plugin_023 {
 
 	public static $instance;
 
@@ -68,10 +67,10 @@ class c2c_ConfigureSMTP extends C2C_Plugin_023 {
 	 * @return void
 	 */
 	public function __construct() {
-		$this->c2c_ConfigureSMTP();
+		$this->ConfigureAES_DKIM_SMTP();
 	}
 
-	public function c2c_ConfigureSMTP() {
+	public function ConfigureAES_DKIM_SMTP() {
 		// Be a singleton
 		if ( ! is_null( self::$instance ) )
 			return;
@@ -455,11 +454,11 @@ public function get_random_string($length) {
     return $string;
 }
 
-} // end c2c_ConfigureSMTP
+} // end ConfigureAES_DKIM_SMTP
 
 // NOTICE: The 'c2c_configure_smtp' global is deprecated and will be removed in the plugin's version 3.0.
 // Instead, use: c2c_ConfigureSMTP::$instance
-$GLOBALS['c2c_configure_smtp'] = new c2c_ConfigureSMTP();
+$GLOBALS['c2c_configure_aes_dkim_smtp'] = new c2c_ConfigureAES_DKIM_SMTP();
 
 endif; // end if !class_exists()
 
