@@ -366,7 +366,7 @@ JS;
         echo "<form name='check_dkim' action='$action_url' method='post'>\n";
 		wp_nonce_field( $this->nonce_field );
 		echo '<input type="hidden" name="' . $this->get_form_submit_name( 'check_DKIM' ) .'" value="1" />';
-        echo '<input type="submit" name="Check" value="' . esc_attr__( 'Check DKIM setup', $this->textdomain ) . '" /><input type="hidden" name="checkAddress" value=' . $this->getRandomString(10) . ' /></div>';
+        echo '<input type="submit" name="Check" value="' . esc_attr__( 'Check DKIM setup', $this->textdomain ) . '" /><input type="hidden" name="checkAddress" value=' . $this->get_random_string(10) . ' /></div>';
 		echo '</form></div>'; 
         echo '<div class="wrap"><h2>Thanks for using this plugin</h2>';
         echo '<p>I hope this plugin has saved you time and trouble and given you a pain free integration of Amazon SES and/or DKIM.  If this has been of value to you, you can show your appreciation and encourage me to continue developing by buying me a coffee.</p>';
@@ -443,7 +443,7 @@ JS;
 		return $from_name;
 	}
 
-public function gen_Random_String($length) {
+public function gen_random_string($length) {
     $characters = ’0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ’;
     $string = ”;    
     for ($p = 0; $p < $length; $p++) {
