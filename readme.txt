@@ -1,5 +1,5 @@
 === Amazon SES DKIM Mailer ===
-Contributors: Anatta, coffee2code, Titon Barua (titanix88@gmail.com)
+Contributors: Anatta, coffee2code, Titon Barua
 Donate link: http://wt.is/4g
 Tags: Amazon, SES, DKIM, email, smtp, gmail, google, apps, sendmail, wp_mail, phpmailer, outgoing mail, tls, ssl, security, privacy, wp-phpmailer, coffee2code, configure-smtp, anatta
 Requires at least: 3.0
@@ -12,43 +12,48 @@ Configure mailing via Amazon SES or SMTP in WordPress, including support for sen
 
 == Description ==
 
-This plugin is the renamed, rewritten, and updated version of the configure-smtp plugin.
+This plugin is based on the configure-smtp plugin by coffee2code.
 
-Use this plugin to customise the mailing system used by default by WordPress to handle *outgoing* e-mails. It offers you the ability to specify the following:
+Use this plugin to customise the mailing system used by default by WordPress to handle *outgoing* e-mails. It offers you the ability to configure the following;
 
-* --- Amazon SES ---
+Amazon SES:
+
 * Amazon AWS access key and secret key
-* Validated "From" address
-* --- DKIM Settings ---
-* DKIM private key (and password if encrypted)
+* Amazon SES Validated 'From:' address
+* 'From:' Sender Name
+
+DKIM:
+
+* DKIM private key
+* DKIM private key password
 * DKIM domain
 * DKIM selector
-* --- SMTP (if not using SES) ---
+
+SMTP (if not using SES):
+
 * SMTP host name
 * SMTP port number
 * If SMTPAuth (authentication) should be used.
 * SMTP username
 * SMTP password
-* If the SMTP connection needs to occur over ssl or tls
+* SMTP connection (ssl or tls)
 
-You can indicate that you wish to use GMail or Google Apps to handle outgoing e-mail, in which case the settings are automatically configured to values appropriate for GMail or Google Apps, though you'll need to specify your GMail or Google Apps e-mail (including the "@gmail.com/@your-apps-domain.com") and password.
+Regardless of whether Amazon SES or SMTP is enabled, the plugin provides you the ability to use the name and e-mail of the 'From:' field for all outgoing e-mails and to enable DKIM signing if your web host or server mail service does not provide DKIM.
 
-Regardless of whether Amazon SES or SMTP is enabled, the plugin provides you the ability to define the name and e-mail of the 'From:' field for all outgoing e-mails and to enable DKIM signing if your web host or server mail service does not provide DKIM.
-
-A simple test button is also available that allows you to send a test e-mail to yourself to check if sending e-mail has been properly configured for your blog.
+A test button is also available that allows you to send a test e-mail to check if everything has been properly configured.
 
 Additional Links: [Plugin Homepage](http://www.anatta.com/tools/amazon-ses-with-dkim-support-wordpress-plugin/)
 
-To do: Incorporate Amazon SES stats checking and display and implement failover to SMTP once quota is reached.
+*To do:* Incorporate Amazon SES stats checking and display and implement failover to SMTP once quota is reached.
 
 == Installation ==
 
 1. Unzip the plugin zip file inside the `/wp-content/plugins/` directory (or install via the built-in WordPress plugin installer)
 1. Activate the plugin through the 'Plugins' admin menu in WordPress
 1. Click the plugin's `Settings` link next to its `Deactivate` link (still on the Plugins page), or click on the `Settings` -> `Mail Settings` link, to go to the plugin's admin settings page.  Optionally customise the settings (to configure it if the defaults aren't valid for your situation).
-1. For DKIM generate a public and private key then, upload your private key to your server (we recommend naming it .htkeyprivate and placing it in the website root), you will also need to add a DKIM dns record with your selector and DKIM public key.  There are many good tutorials and key generators to help - Google is your friend. On a linux server or Mac you can generate your own DKIM keys with the following commands: openssl genrsa -out private.key 1024 | openssl rsa -in private.key -pubout -out public.key.
-1. For DKIM, set a DNS TXT record something like: <selector>._domainkey.<example.com>.  v=DKIM1; k=rsa; g=*; s=email; h=sha1; t=s; p=<your public key>;
-1. (optional) Use the built-in test to see if your blog can properly send out e-mails.
+1. For DKIM generate a public and private key then, upload your private key to your server (we recommend naming it .htkeyprivate and placing it in the website root and changing permissions to 400 or 440). There are many good tutorials and online key generators to help - Google is your friend. On a linux server or Mac you can generate your own DKIM keys with a password of 'change-me' using the following terminal command: *openssl genrsa -des3 -passout pass:change-me -out .htkeyprivate 1024 && openssl rsa -in .htkeyprivate -passin pass:change-me -pubout -out .htkeypublic*
+1. For DKIM, set a DNS TXT record something like: HOST: *your-selector._domainkey.example.com.*  TXT VALUE: *v=DKIM1; k=rsa; g=\*; s=email; h=sha1; t=s; p=your-public-key;*
+1. *Optional* Use the built-in test to see if your blog can properly send out e-mails.
 
 == Frequently Asked Questions ==
 
@@ -86,6 +91,8 @@ The connection to the SMTP server was successful, but the credentials you provid
 == Screenshots ==
 
 1. A screenshot of the plugin's admin settings page.
+1. Another screenshot of the plugin's admin settings page.
+1. Another screenshot of the plugin's admin settings page.
 
 == Changelog ==
 
