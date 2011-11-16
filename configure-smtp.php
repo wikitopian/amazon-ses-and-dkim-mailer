@@ -20,9 +20,9 @@ Compatible with WordPress 3.0+, 3.1+, 3.2+, 3.3
 =>> Or visit: http://wordpress.org/extend/plugins/amazon-ses-and-dkim-mailer/
 
 TODO:
-	* Add screenshots and detailed install instructions
-	* Add DKIM key generator and installation resources
-	* Add ability to configure plugin via defines in wp-config.php
+	* Incorporate Amazon SES stats checking
+	* Implement failover to SMTP once SES quota is reached, or SES error code received
+	* Add simple DKIM key and DNS record generator to plugin homepage
 */
 
 
@@ -456,8 +456,6 @@ public function get_random_string($length) {
 }
 
 } // end c2c_ConfigureSMTP
-
-
 
 // NOTICE: The 'c2c_configure_smtp' global is deprecated and will be removed in the plugin's version 3.0.
 // Instead, use: c2c_ConfigureSMTP::$instance
