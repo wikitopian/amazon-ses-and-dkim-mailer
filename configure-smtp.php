@@ -23,7 +23,7 @@ Compatible with WordPress 3.0+, 3.1+, 3.2+, 3.3
 
 =>> Read the accompanying readme.txt file for instructions and documentation.
 =>> Also, visit the plugin's homepage for additional information and updates.
-=>> Or visit: http://wordpress.org/extend/plugins/amazon-ses-and-dkim-signing-email/
+=>> Or visit: http://wordpress.org/extend/plugins/amazon-ses-and-dkim-mailer/
 
 TODO:
 	* Add screenshots and detailed install instructions

@@ -39,6 +39,8 @@ A simple test button is also available that allows you to send a test e-mail to 
 
 Additional Links: [Plugin Homepage](http://www.anatta.com/tools/amazon-ses-with-dkim-support-wordpress-plugin/)
 
+To do: Incorporate Amazon SES stats checking and display and implement failover to SMTP once quota is reached.
+
 == Installation ==
 
 1. Unzip the plugin zip file inside the `/wp-content/plugins/` directory (or install via the built-in WordPress plugin installer)
