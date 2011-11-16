@@ -11,9 +11,9 @@ Configure mailing via Amazon SES or SMTP in with DKIM signing in WordPress, incl
 
 == Description ==
 
-This plugin is based on the configure-smtp plugin by coffee2code, modified by [Anatta®](http://www.anatta.com).
+This plugin from [Anatta®](http://www.anatta.com) adds Amazon SES and DKIM and third party SMTP capability to the Wordpress mailing system for outgoing emails. It is based on the configure-smtp pluginv3.1 by coffee2code.
 
-Use this plugin to customise the mailing system used by default by WordPress to handle *outgoing* e-mails. It offers you the ability to configure the following;
+The plugin provides the ability to configure the following;
 
 Amazon SES:
 
@@ -58,15 +58,23 @@ Additional Links: [Plugin Homepage](http://www.anatta.com/tools/amazon-ses-with-
 
 = I am already able to receive e-mail sent by my blog, so would I have any use or need for this plugin? =
 
-Most likely, no.  Not unless you have a preference for having your mail sent out via a different SMTP server, such as GMail, or would like the reliability and credibility of using Amazon's architecture.
+Most likely, no.  Not unless you have a preference for having your mail sent out via a different SMTP server, such as GMail, would like the reliability and credibility of using Amazon's SES architecture.  If your SMTP server or web host does not support DKIM signing, you may wish to use this plugin to DKIM sign outgoing mail.
+
+= I just want to DKIM sign my emails, I do not need to use Amazon SES or a third party SMTP server, can I still use this plugin? =
+
+No problem, just install the plugin and only set the DKIM settings.  If you want to use DKIM with an SMTP server then set the DKIM and SMTP server details.  Note that many SMTP servers including Gmail already DKIM sign all mails so be sure to check that you are not double signing.
+
+= How can I check if DKIM is configured correctly? = 
+
+Brandon Checketts has an excellent [online tool](http://www.brandonchecketts.com/emailtest.php) for checking your DKIM signatures. The button at the bottom of the plugin settings page will send a message to this service and will display a link where you can check.  Note that if using Amazon SES, you need to have production access in order for this check to be able to send an email to an unregistered address,
 
 = How do I get an Amazon AWS account? = Sign up at http://aws.amazon.com.
 
 = How do I get my Amazon AWS keys? = You can access these from your AWS Management Console from the Security Credentials link under your account name in the top right corner
 
-= Amazon SES is not letting me send from the 'From:' address = It is a requirement of Amazon SES that all sender addresses are verified before they can be used as a From address.  Validate your address through the Amazon SES Management Console. 
+= Amazon SES is not letting me *send from* the 'From:' address = It is a requirement of Amazon SES that all sender addresses are verified before they can be used as a From address.  Validate your address through the Amazon SES Management Console. 
 
-= Amazon SES is only letting me send mail to my registered addresses = You need to apply for production access from your Amazon SES Management Console (there's a big button - you can't miss it).  Until production access is granted, you will only be able to send email your registered addresses.
+= Amazon SES is only letting me *send to* my registered addresses = You need to apply for production access from your Amazon SES Management Console (there's a big button - you can't miss it).  Until production access is granted, you will only be able to send email your registered addresses.
 
 = How do I find out my SMTP host, and/or if I need to use SMTPAuth and what my username and password for that are? =
 
@@ -76,14 +84,14 @@ Check out the settings for your local e-mail program.  More than likely that is 
 
 If your settings worked, you should receive the test e-mail at the e-mail address associated with your WordPress blog user account.  That e-mail contains a time-stamp which was reported to you by the plugin when the e-mail was sent.  If you are trying out various setting values, be sure to record what your settings were and what the time-stamp was when sending with those settings.
 
-= Why am I getting this error when attempting to send a test message: SMTP Error: Could not connect to SMTP host.? =
+= Why am I getting this error when attempting to send a test message: SMTP Error: Could not connect to SMTP host? =
 
 There are a number of reasons you could be getting this error:
 # Your server (or a router to which it is connected) may be blocking all outgoing SMTP traffic.
 # Your mail server may be configured to allow SMTP connections only from certain servers.
 # You have supplied incorrect server settings (hostname, port number, secure protocol type).
 
-= What am I getting this error: SMTP Error: Could not authenticate.? =
+= What am I getting this error: SMTP Error: Could not authenticate? =
 
 The connection to the SMTP server was successful, but the credentials you provided (username and/or password) are not correct.
 
@@ -101,10 +109,12 @@ You can find out more about the plugin and us at [Anatta® Operational Innovatio
 
 == Changelog ==
 
+= 1.0.1 =
+* Added button to check DKIM signatures with Brendon Checkett's [online tool](http://www.brandonchecketts.com/emailtest.php).
 = 1.0 =
-* Initial Release
+* Initial Release.
 
 == Upgrade Notice ==
 
-= 1.0 =
+= 1.0.1 =
 * If migrating from configure-smtp (or other mailer plugins), please remember to deactivate it first to avoid conflicts.

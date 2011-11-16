@@ -2,13 +2,13 @@
 /**
  * @package Amazon SES DKIM Mailer
  * @author Anatta (Nick Murray)
- * @version 1.0
+ * @version 1.0.1
  */
 /*
 /**
  * @package Amazon SES DKIM Mailer
  * @author Anatta (Nick Murray)
- * @version 1.0
+ * @version 1.0.1
  */
 /*
 Plugin Name: Amazon SES DKIM Mailer
@@ -320,6 +320,37 @@ JS;
 			}
 		}
 	}
+    
+    public function maybe_checkDKIM_test() {
+		if ( isset( $_POST[$this->get_form_submit_name( 'check_DKIM' )] ) ) {
+			check_admin_referer( $this->nonce_field );
+			$emailKey = $_POST['checkAddress'];
+            $email = $emailKey . "@www.brandonchecketts.com";
+            $timestamp = current_time( 'mysql' );
+			$checkURL = "http://www.brandonchecketts.com/emailtest.php?email=" . $emailKey . "@www.brandonchecketts.com";
+			$message = sprintf( __( 'Hi, this is the %s plugin e-mailing you a test message from your WordPress blog.', $this->textdomain ), $this->name );
+			$message .= "\n\n";
+			$message .= sprintf( __( 'This message was sent with this time-stamp: %s', $this->textdomain ), $timestamp );
+			$message .= "\n\n";
+			$message .= __( 'Congratulations!  Your blog is properly configured to send e-mail.', $this->textdomain );
+			
+            
+            wp_mail( $email, __( 'Test message from your WordPress blog', $this->textdomain ), $message );
+
+			// Check success
+			global $phpmailer;
+			if ( $phpmailer->ErrorInfo != "" ) {
+				$this->error_msg  = '<div class="error"><p>' . __( 'An error was encountered while trying to send the test e-mail.', $this->textdomain ) . '</p>';
+				$this->error_msg .= '<blockquote style="font-weight:bold;">';
+				$this->error_msg .= '<p>' . $phpmailer->ErrorInfo . '</p>';
+				$this->error_msg .= '</p></blockquote>';
+				$this->error_msg .= '</div>';
+			} else {
+				$this->error_msg  = '<div class="updated"><p>' . __( 'Test e-mail sent.', $this->textdomain ) . '</p>';
+				$this->error_msg .= '<p>' . sprintf( __( 'You can check the results at: %s.', $this->textdomain ), $checkURL ) . '</p></div>';
+			}
+		}
+	}
 
 	/*
 	 * Outputs form to send test e-mail.
@@ -337,7 +368,11 @@ JS;
 		echo "<form name='configure_smtp' action='$action_url' method='post'>\n";
 		wp_nonce_field( $this->nonce_field );
 		echo '<input type="hidden" name="' . $this->get_form_submit_name( 'submit_test_email' ) .'" value="1" />';
-		echo '<div class="submit"><input type="submit" name="Submit" value="' . esc_attr__( 'Send test e-mail', $this->textdomain ) . '" /></div>';
+		echo '<div class="submit"><input type="submit" name="Submit" value="' . esc_attr__( 'Send test e-mail', $this->textdomain ) . '" />';
+        echo "<form name='check_dkim' action='$action_url' method='post'>\n";
+		wp_nonce_field( $this->nonce_field );
+		echo '<input type="hidden" name="' . $this->get_form_submit_name( 'check_DKIM' ) .'" value="1" />';
+        echo '<input type="submit" name="Check" value="' . esc_attr__( 'Check DKIM setup', $this->textdomain ) . '" /><input type="hidden" name="checkAddress" value=' . $this->getRandomString(10) . ' /></div>';
 		echo '</form></div>'; 
         echo '<div class="wrap"><h2>Thanks for using this plugin</h2>';
         echo '<p>I hope this plugin has saved you time and trouble and given you a pain free integration of Amazon SES and/or DKIM.  If this has been of value to you, you can show your appreciation and encourage me to continue developing by buying me a coffee.</p>';
@@ -414,7 +449,18 @@ JS;
 		return $from_name;
 	}
 
+public function gen_Random_String($length) {
+    $characters = ’0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ’;
+    $string = ”;    
+    for ($p = 0; $p < $length; $p++) {
+        $string .= $characters[mt_rand(0, strlen($characters))];
+    }
+    return $string;
+}
+
 } // end c2c_ConfigureSMTP
+
+
 
 // NOTICE: The 'c2c_configure_smtp' global is deprecated and will be removed in the plugin's version 3.0.
 // Instead, use: c2c_ConfigureSMTP::$instance
