@@ -124,7 +124,7 @@ class c2c_ConfigureSMTP extends C2C_Plugin_023 {
 				'help' => __( 'Set your Amazon AWS Secret Key.', $this->textdomain ) ),
 			'from_email' => array( 'input' => 'text', 'default' => get_bloginfo('admin_email'),
 				'label' => __( 'From e-mail', $this->textdomain ),
-				'help' => __( 'Sets the From e-mail address for all outgoing messages. Leave blank to use the WordPress default. This value will be used even if you don\'t enable SMTP.<br />NOTE: For Amazon SES, this email address needs to have been validated.<br />For SMTP, this may not take effect depending on your mail server and settings, especially if using SMTPAuth (such as for GMail).', $this->textdomain ) ),
+				'help' => __( 'Sets the From: e-mail address for all outgoing messages. Leave blank to use the WordPress default. This value will be used even if you don\'t enable SMTP or Amazon AES.<br />NOTE: For Amazon SES, the From: e-mail address needs to have been validated.<br />For SMTP, this may not take effect depending on your mail server and settings, especially if using SMTPAuth (such as for GMail).', $this->textdomain ) ),
 			'from_name'	=> array( 'input' => 'text', 'default' => get_bloginfo('name'),
 				'label' => __( 'Sender name', $this->textdomain ),
 				'help' => __( 'Sets the From name for all outgoing messages. Leave blank to use the WordPress default. This value will be used even if you don\'t enable SMTP.', $this->textdomain ) ),	
