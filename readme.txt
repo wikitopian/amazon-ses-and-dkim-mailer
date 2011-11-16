@@ -11,7 +11,7 @@ Configure mailing via Amazon SES or SMTP in with DKIM signing in WordPress, incl
 
 == Description ==
 
-This plugin from [Anatta®](http://www.anatta.com) adds Amazon SES and DKIM and third party SMTP capability to the Wordpress mailing system for outgoing emails. It is based on the configure-smtp plugin v3.1 by coffee2code.
+This plugin from [Anatta®](http://www.anatta.com) adds Amazon SES, DKIM and third party SMTP capability to the Wordpress mailing system for outgoing e-mails. It is based on the configure-smtp plugin v3.1 by coffee2code and the Amazon SES class for PHPMailer by Titon Barua.
 
 The plugin provides the ability to configure the following;
 
@@ -122,5 +122,5 @@ If your settings worked, you should receive the test e-mail at the e-mail addres
 
 == Upgrade Notice ==
 
-= 1.0.1 =
+= 1.0.2 =
 * If migrating from configure-smtp (or other mailer plugins), please remember to deactivate it first to avoid conflicts.
