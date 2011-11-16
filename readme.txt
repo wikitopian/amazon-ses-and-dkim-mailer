@@ -16,20 +16,17 @@ This plugin from [Anatta®](http://www.anatta.com) adds Amazon SES, DKIM and thi
 The plugin provides the ability to configure the following;
 
 **Amazon SES**:
-
 * Amazon AWS access key and secret key
 * Amazon SES Validated 'From:' address
 * 'From:' Sender Name
 
 **DKIM**:
-
 * DKIM private key
 * DKIM private key password
 * DKIM domain
 * DKIM selector
 
 **SMTP (if not using SES)**:
-
 * SMTP host name
 * SMTP port number
 * If SMTPAuth (authentication) should be used.
@@ -44,7 +41,6 @@ Two test buttons are also available that allows you to send a test e-mail to you
 Additional Links: [Plugin Homepage](http://www.anatta.com/tools/amazon-ses-with-dkim-support-wordpress-plugin/)
 
 **To do**: 
-
 * Incorporate Amazon SES stats checking
 * Implement failover to SMTP once SES quota is reached, or SES error code received
 * Add simple DKIM key and DNS record generator to plugin homepage
@@ -83,11 +79,11 @@ Brandon Checketts has an excellent [online tool](http://www.brandonchecketts.com
 
 = How do I get my Amazon AWS keys? = You can access these from your AWS Management Console from the Security Credentials link under your account name in the top right corner.
 
-= Amazon SES is not letting me *send from* the 'From:' address = It is a requirement of Amazon SES that all sender addresses are verified before they can be used as a From address.  Validate your address through the Amazon SES Management Console. 
+= Amazon SES is not letting me *send from* the 'From:' address = It is a requirement of Amazon SES that all sender addresses are verified before they can be used as a 'From:' address.  Validate your address through the Amazon SES Management Console. 
 
 = Amazon SES is only letting me *send to* my registered addresses = You need to apply for production access from your Amazon SES Management Console (there's a big button - you can't miss it).  Until production access is granted, you will only be able to send email your registered addresses.
 
-= Why do the emails sent from my blog to a GMail address or Microsoft Outlook have *via email-bounces.amazonses.com* appended to the 'From:' address? = This is an indication that you donothave DKIM set up or set up correctly. If each message is properly DKIM signed, this *via email-bounces.amazonses.com* notification should dissapear.
+= Why do the emails sent from my blog to a GMail address or Microsoft Outlook have *via email-bounces.amazonses.com* appended to the 'From:' address? = This is an indication that you do not have DKIM set up or set up correctly. If each message is properly DKIM signed, this *via email-bounces.amazonses.com* notification should dissapear.
 
 = How do I find out my SMTP host, and/or if I need to use SMTPAuth and what my username and password for that are? = Check out the settings for your local e-mail program.  More than likely that is configured to use an outgoing SMTP server.  Otherwise, contact your host or someone more intimately knowledgeable about your situation.
 
