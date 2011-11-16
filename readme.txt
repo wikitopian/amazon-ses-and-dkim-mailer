@@ -114,7 +114,7 @@ If your settings worked, you should receive the test e-mail at the e-mail addres
 == Changelog ==
 
 = 1.0.2 =
-* Bugfix
+* Bugfix.
 = 1.0.1 =
 * Added button to check DKIM signatures with Brendon Checkett's [online tool](http://www.brandonchecketts.com/emailtest.php).
 = 1.0 =
