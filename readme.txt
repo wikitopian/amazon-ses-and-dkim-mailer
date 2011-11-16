@@ -77,6 +77,8 @@ Brandon Checketts has an excellent [online tool](http://www.brandonchecketts.com
 
 = Amazon SES is only letting me *send to* my registered addresses = You need to apply for production access from your Amazon SES Management Console (there's a big button - you can't miss it).  Until production access is granted, you will only be able to send email your registered addresses.
 
+= Why do the emails sent from my blog to a GMail address or Microsoft Outlook have *via email-bounces.amazonses.com* appended to the 'From:' address? = This is an indication that you donothave DKIM set up or set up correctly. If each message is properly DKIM signed, this *via email-bounces.amazonses.com* notification should dissapear.
+
 = How do I find out my SMTP host, and/or if I need to use SMTPAuth and what my username and password for that are? =
 
 Check out the settings for your local e-mail program.  More than likely that is configured to use an outgoing SMTP server.  Otherwise, contact your host or someone more intimately knowledgeable about your situation.
@@ -111,7 +113,7 @@ You can find out more about the plugin and us at [Anatta® Operational Innovatio
 == Changelog ==
 
 = 1.0.2 =
-Bugfix
+* Bugfix
 = 1.0.1 =
 * Added button to check DKIM signatures with Brendon Checkett's [online tool](http://www.brandonchecketts.com/emailtest.php).
 = 1.0 =
