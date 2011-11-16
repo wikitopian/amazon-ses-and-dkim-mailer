@@ -1,5 +1,5 @@
 === Amazon SES DKIM Mailer ===
-Contributors: Anatta, coffee2code, Titon Barua
+Contributors: Anatta
 Donate link: http://wt.is/4g
 Tags: Amazon, SES, DKIM, email, smtp, gmail, google, apps, sendmail, wp_mail, phpmailer, outgoing mail, tls, ssl, security, privacy, wp-phpmailer, coffee2code, configure-smtp, anatta
 Requires at least: 3.0
