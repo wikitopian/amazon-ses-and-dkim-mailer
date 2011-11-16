@@ -190,10 +190,11 @@ class c2c_ConfigureSMTP extends C2C_Plugin_023 {
 	public function register_filters() {
 		global $pagenow;
 		if ( 'options-general.php' == $pagenow )
-			add_action( 'admin_print_footer_scripts',          array( &$this, 'add_js' ) );
+		add_action( 'admin_print_footer_scripts',          array( &$this, 'add_js' ) );
 		add_filter( 'wp_mail', array( &$this, 'anatta_swap_php_mailer') ); //earliest call before phpmailer is loaded.
 		add_action( 'admin_init',                              array( &$this, 'maybe_send_test' ) );
 		add_action( 'phpmailer_init',                          array( &$this, 'phpmailer_init' ) );
+		add_action( 'admin_init',                              array( &$this, 'maybe_check_DKIM' ) );
 		add_filter( 'wp_mail_from',                            array( &$this, 'wp_mail_from' ) );
 		add_filter( 'wp_mail_from_name',                       array( &$this, 'wp_mail_from_name' ) );
 		add_action( $this->get_hook( 'after_settings_form' ),  array( &$this, 'send_test_form' ) );
@@ -315,18 +316,18 @@ JS;
 		}
 	}
     
-    public function maybe_checkDKIM_test() {
+    public function maybe_check_DKIM() {
 		if ( isset( $_POST[$this->get_form_submit_name( 'check_DKIM' )] ) ) {
 			check_admin_referer( $this->nonce_field );
-			$emailKey = $_POST['checkAddress'];
+			$emailKey = $_POST[$this->get_form_submit_name( 'check_address' )];
             $email = $emailKey . "@www.brandonchecketts.com";
             $timestamp = current_time( 'mysql' );
-			$checkURL = "http://www.brandonchecketts.com/emailtest.php?email=" . $emailKey . "@www.brandonchecketts.com";
+			$checkURL = '<a href="http://www.brandonchecketts.com/emailtest.php?email=' . $email . '" target="_blank" >by clicking here</a>';
 			$message = sprintf( __( 'Hi, this is the %s plugin e-mailing you a test message from your WordPress blog.', $this->textdomain ), $this->name );
 			$message .= "\n\n";
 			$message .= sprintf( __( 'This message was sent with this time-stamp: %s', $this->textdomain ), $timestamp );
 			$message .= "\n\n";
-			$message .= __( 'Congratulations!  Your blog is properly configured to send e-mail.', $this->textdomain );
+			$message .= __( 'Congratulations!  Your blog is sending e-mail OK, but check below to see if your DKIM signature passed.', $this->textdomain );
 			
             
             wp_mail( $email, __( 'Test message from your WordPress blog', $this->textdomain ), $message );
@@ -341,7 +342,7 @@ JS;
 				$this->error_msg .= '</div>';
 			} else {
 				$this->error_msg  = '<div class="updated"><p>' . __( 'Test e-mail sent.', $this->textdomain ) . '</p>';
-				$this->error_msg .= '<p>' . sprintf( __( 'You can check the results at: %s.', $this->textdomain ), $checkURL ) . '</p></div>';
+				$this->error_msg .= '<p>' . sprintf( __( 'You can check the results %s.', $this->textdomain ), $checkURL ) . '</p></div>';
 			}
 		}
 	}
@@ -362,12 +363,13 @@ JS;
 		echo "<form name='configure_smtp' action='$action_url' method='post'>\n";
 		wp_nonce_field( $this->nonce_field );
 		echo '<input type="hidden" name="' . $this->get_form_submit_name( 'submit_test_email' ) .'" value="1" />';
-		echo '<div class="submit"><input type="submit" name="Submit" value="' . esc_attr__( 'Send test e-mail', $this->textdomain ) . '" />';
-        echo "<form name='check_dkim' action='$action_url' method='post'>\n";
+		echo '<div class="submit"><input type="submit" name="Submit" value="' . esc_attr__( 'Send test e-mail', $this->textdomain ) . '" /></div>';
+        echo '<div class="wrap"><h2>Check DKIM Settings</h2>';
+        echo "<p>Pressing the button below will send a test email to Brandon Checkett's online <a href='http://www.brandonchecketts.com/emailtest.php' target='_blank'>DKIM checker tool</a>.  If the email is successfully sent, then a link to the retrieve result will be posted at the top of the page.</p><p><strong>Note:</strong> If using Amazon SES, you mush have Production Access to be able to send to a public email.</p>";
+        echo "<form name='check_DKIM' action='$action_url' method='post'>\n";
 		wp_nonce_field( $this->nonce_field );
-		echo '<input type="hidden" name="' . $this->get_form_submit_name( 'check_DKIM' ) .'" value="1" />';
-        echo '<input type="submit" name="Check" value="' . esc_attr__( 'Check DKIM setup', $this->textdomain ) . '" /><input type="hidden" name="checkAddress" value=' . $this->get_random_string(10) . ' /></div>';
-		echo '</form></div>'; 
+		echo '<input type="hidden" name="' . $this->get_form_submit_name( 'check_DKIM' ) .'" value="1" /><input type="hidden" name=' . $this->get_form_submit_name( 'check_address' ) .' value=' . $this->get_random_string(10) . ' />';
+        echo '<div class="submit"><input type="submit" name="Check" value="' . esc_attr__( 'Check DKIM setup', $this->textdomain ) . '" /></form></div>';
         echo '<div class="wrap"><h2>Thanks for using this plugin</h2>';
         echo '<p>I hope this plugin has saved you time and trouble and given you a pain free integration of Amazon SES and/or DKIM.  If this has been of value to you, you can show your appreciation and encourage me to continue developing by buying me a coffee.</p>';
         echo '<form action="https://www.paypal.com/cgi-bin/webscr" method="post"><input type="hidden" name="cmd" value="_donations"><input type="hidden" name="business" value="paypal@anatta.net"><input type="hidden" name="lc" value="US"><input type="hidden" name="item_name" value="Anatta Limited"><input type="hidden" name="no_note" value="0"><input type="hidden" name="currency_code" value="USD"><input type="hidden" name="bn" value="PP-DonationsBF:btn_donateCC_LG.gif:NonHostedGuest"><input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!"></form></div>'; 
@@ -443,9 +445,9 @@ JS;
 		return $from_name;
 	}
 
-public function gen_random_string($length) {
-    $characters = ’0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ’;
-    $string = ”;    
+public function get_random_string($length) {
+    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $string ='';    
     for ($p = 0; $p < $length; $p++) {
         $string .= $characters[mt_rand(0, strlen($characters))];
     }
