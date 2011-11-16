@@ -5,14 +5,8 @@
  * @version 1.0.1
  */
 /*
-/**
- * @package Amazon SES DKIM Mailer
- * @author Anatta (Nick Murray)
- * @version 1.0.1
- */
-/*
 Plugin Name: Amazon SES DKIM Mailer
-Version: 1.0
+Version: 1.0.1
 Plugin URI: http://www.anatta.com/tools/amazon-ses-with-dkim-support-wordpress-plugin
 Author: Anatta (Nick Murray)
 Author URI: http://www.anatta.com/about/nick-murray
