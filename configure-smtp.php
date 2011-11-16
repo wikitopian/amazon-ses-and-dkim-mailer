@@ -10,7 +10,6 @@ Version: 1.0.2
 Plugin URI: http://www.anatta.com/tools/amazon-ses-with-dkim-support-wordpress-plugin
 Author: Anatta (Nick Murray)
 Author URI: http://www.anatta.com/about/nick-murray
-Text Domain: configure-mailer
 Description: Configure Amazon AES mailing in WordPress, including support for sending e-mail via SSL/TLS (such as GMail).
 
 Compatible with WordPress 3.0+, 3.1+, 3.2+, 3.3
@@ -20,9 +19,9 @@ Compatible with WordPress 3.0+, 3.1+, 3.2+, 3.3
 =>> Or visit: http://wordpress.org/extend/plugins/amazon-ses-and-dkim-mailer/
 
 TODO:
-	* Add screenshots and detailed install instructions
-	* Add DKIM key generator and installation resources
-	* Add ability to configure plugin via defines in wp-config.php
+	* Incorporate Amazon SES stats checking
+	* Implement failover to SMTP once SES quota is reached, or SES error code received
+	* Add simple DKIM key and DNS record generator to plugin homepage
 */
 
 
@@ -46,11 +45,11 @@ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRA
 IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-if ( ! class_exists( 'c2c_ConfigureSMTP' ) ) :
+if ( ! class_exists( 'c2c_ConfigureAES_DKIM_SMTP' ) ) :
 
 require_once( 'c2c-plugin.php' );
 
-class c2c_ConfigureSMTP extends C2C_Plugin_023 {
+class c2c_ConfigureAES_DKIM_SMTP extends C2C_Plugin_023 {
 
 	public static $instance;
 
@@ -68,10 +67,10 @@ class c2c_ConfigureSMTP extends C2C_Plugin_023 {
 	 * @return void
 	 */
 	public function __construct() {
-		$this->c2c_ConfigureSMTP();
+		$this->ConfigureAES_DKIM_SMTP();
 	}
 
-	public function c2c_ConfigureSMTP() {
+	public function ConfigureAES_DKIM_SMTP() {
 		// Be a singleton
 		if ( ! is_null( self::$instance ) )
 			return;
@@ -124,7 +123,7 @@ class c2c_ConfigureSMTP extends C2C_Plugin_023 {
 				'help' => __( 'Set your Amazon AWS Secret Key.', $this->textdomain ) ),
 			'from_email' => array( 'input' => 'text', 'default' => get_bloginfo('admin_email'),
 				'label' => __( 'From e-mail', $this->textdomain ),
-				'help' => __( 'Sets the From e-mail address for all outgoing messages. Leave blank to use the WordPress default. This value will be used even if you don\'t enable SMTP.<br />NOTE: For Amazon SES, this email address needs to have been validated.<br />For SMTP, this may not take effect depending on your mail server and settings, especially if using SMTPAuth (such as for GMail).', $this->textdomain ) ),
+				'help' => __( 'Sets the From: e-mail address for all outgoing messages. Leave blank to use the WordPress default. This value will be used even if you don\'t enable SMTP or Amazon AES.<br />NOTE: For Amazon SES, the From: e-mail address needs to have been validated.<br />For SMTP, this may not take effect depending on your mail server and settings, especially if using SMTPAuth (such as for GMail).', $this->textdomain ) ),
 			'from_name'	=> array( 'input' => 'text', 'default' => get_bloginfo('name'),
 				'label' => __( 'Sender name', $this->textdomain ),
 				'help' => __( 'Sets the From name for all outgoing messages. Leave blank to use the WordPress default. This value will be used even if you don\'t enable SMTP.', $this->textdomain ) ),	
@@ -363,15 +362,16 @@ JS;
 		echo "<form name='configure_smtp' action='$action_url' method='post'>\n";
 		wp_nonce_field( $this->nonce_field );
 		echo '<input type="hidden" name="' . $this->get_form_submit_name( 'submit_test_email' ) .'" value="1" />';
-		echo '<div class="submit"><input type="submit" name="Submit" value="' . esc_attr__( 'Send test e-mail', $this->textdomain ) . '" /></div>';
+		echo '<div class="submit"><input type="submit" name="Submit" value="' . esc_attr__( 'Send test e-mail', $this->textdomain ) . '" /></form></div>';
         echo '<div class="wrap"><h2>Check DKIM Settings</h2>';
         echo "<p>Pressing the button below will send a test email to Brandon Checkett's online <a href='http://www.brandonchecketts.com/emailtest.php' target='_blank'>DKIM checker tool</a>.  If the email is successfully sent, then a link to the retrieve result will be posted at the top of the page.</p><p><strong>Note:</strong> If using Amazon SES, you mush have Production Access to be able to send to a public email.</p>";
+        echo '<p><em>You must save any changes to the form above before attempting to send a test e-mail.</em></p>';
         echo "<form name='check_DKIM' action='$action_url' method='post'>\n";
 		wp_nonce_field( $this->nonce_field );
 		echo '<input type="hidden" name="' . $this->get_form_submit_name( 'check_DKIM' ) .'" value="1" /><input type="hidden" name=' . $this->get_form_submit_name( 'check_address' ) .' value=' . $this->get_random_string(10) . ' />';
         echo '<div class="submit"><input type="submit" name="Check" value="' . esc_attr__( 'Check DKIM setup', $this->textdomain ) . '" /></form></div>';
         echo '<div class="wrap"><h2>Thanks for using this plugin</h2>';
-        echo '<p>I hope this plugin has saved you time and trouble and given you a pain free integration of Amazon SES and/or DKIM.  If this has been of value to you, you can show your appreciation and encourage me to continue developing by buying me a coffee.</p>';
+        echo '<p>I hope this plugin has saved you time and trouble and given you a pain free integration of Amazon SES and/or DKIM (two particularly obtuse protocols).</p><p>Many hours of sweat and tears have gone into making this plugin work.  If it has been of value to you, buying me a coffee or a beer would be a great way to show your appreciation and would certainly encourage me to continue publishing random pieces of code like this.</p><p>Many thanks<br />Nick</p>';
         echo '<form action="https://www.paypal.com/cgi-bin/webscr" method="post"><input type="hidden" name="cmd" value="_donations"><input type="hidden" name="business" value="paypal@anatta.net"><input type="hidden" name="lc" value="US"><input type="hidden" name="item_name" value="Anatta Limited"><input type="hidden" name="no_note" value="0"><input type="hidden" name="currency_code" value="USD"><input type="hidden" name="bn" value="PP-DonationsBF:btn_donateCC_LG.gif:NonHostedGuest"><input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!"></form></div>'; 
 	}
 
@@ -454,13 +454,11 @@ public function get_random_string($length) {
     return $string;
 }
 
-} // end c2c_ConfigureSMTP
-
-
+} // end ConfigureAES_DKIM_SMTP
 
 // NOTICE: The 'c2c_configure_smtp' global is deprecated and will be removed in the plugin's version 3.0.
 // Instead, use: c2c_ConfigureSMTP::$instance
-$GLOBALS['c2c_configure_smtp'] = new c2c_ConfigureSMTP();
+$GLOBALS['c2c_configure_aes_dkim_smtp'] = new c2c_ConfigureAES_DKIM_SMTP();
 
 endif; // end if !class_exists()
 
