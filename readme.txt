@@ -44,15 +44,18 @@ Two test buttons are also available that allows you to send a test e-mail to you
 Additional Links: [Plugin Homepage](http://www.anatta.com/tools/amazon-ses-with-dkim-support-wordpress-plugin/)
 
 **To do**: 
+
 * Incorporate Amazon SES stats checking
 * Implement failover to SMTP once SES quota is reached, or SES error code received
 * Add simple DKIM key and DNS record generator to plugin homepage
 
 == Installation ==
 
-1. Unzip the plugin zip file inside the `/wp-content/plugins/` directory (or install via the built-in WordPress plugin installer)
+1. Deactivate any existing mailer plugins to avoid conflicts.
 
-1. Activate the plugin through the 'Plugins' admin menu in WordPress
+1. Unzip the plugin zip file inside the `/wp-content/plugins/` directory (or install via the built-in WordPress plugin installer).
+
+1. Activate the plugin through the 'Plugins' admin menu in WordPress.
 
 1. Click the plugin's `Settings` link next to its `Deactivate` link (still on the Plugins page), or click on the `Settings` -> `Mail Settings` link, to go to the plugin's admin settings page.  Customise the settings for your situation.
 
