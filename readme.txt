@@ -45,7 +45,7 @@ Additional Links: [Plugin Homepage](http://www.anatta.com/tools/amazon-ses-with-
 
 **To do**: 
 
-* Incorporate Amazon SES stats checking
+* Incorporate Amazon SES stats reporting
 * Implement failover to SMTP once SES quota is reached, or SES error code received
 * Add simple DKIM key and DNS record generator to plugin homepage
 
