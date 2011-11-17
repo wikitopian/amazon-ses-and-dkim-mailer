@@ -7,7 +7,7 @@ Tested up to: 3.3
 Stable tag: 1.0.2
 Version: 1.0.2
 
-Configure mailing via Amazon SES or SMTP with DKIM signing in WordPress, including support for SMTP over SSL/TLS (such as GMail). 
+Configure Wordpress mailer with DKIM signing and delivery via Amazon SES, GMail or SMTP over SSL/TLS. 
 
 == Description ==
 
