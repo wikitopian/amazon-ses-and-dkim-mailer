@@ -110,7 +110,8 @@ class c2c_ConfigureAES_DKIM_SMTP extends C2C_Plugin_023 {
 	public function load_config() {
 		$this->name      = __( 'Anatta Mailer', $this->textdomain );
 		$this->menu_name = __( 'Mail Settings', $this->textdomain );
-
+		$user = wp_get_current_user();
+                $userDomain = explode('@', $user->user_email);
 		$this->config = array(
 			'use_aws' => array( 'input' => 'checkbox', 'default' => false,
 				'label' => __( 'Send e-mail via Amazon SES?', $this->textdomain ),
@@ -123,21 +124,21 @@ class c2c_ConfigureAES_DKIM_SMTP extends C2C_Plugin_023 {
 				'help' => __( 'Set your Amazon AWS Secret Key.', $this->textdomain ) ),
 			'from_email' => array( 'input' => 'text', 'default' => get_bloginfo('admin_email'),
 				'label' => __( 'From e-mail', $this->textdomain ),
-				'help' => __( 'Sets the From: e-mail address for all outgoing messages. Leave blank to use the WordPress default. This value will be used even if you don\'t enable SMTP or Amazon AES.<br />NOTE: For Amazon SES, the From: e-mail address needs to have been validated.<br />For SMTP, this may not take effect depending on your mail server and settings, especially if using SMTPAuth (such as for GMail).', $this->textdomain ) ),
+				'help' => __( 'Sets the From: e-mail address for all outgoing messages. Leave blank to use the WordPress default. This value will be used even if you don\'t enable Amazon AES or SMTP.<br />NOTE: For Amazon SES, the From: e-mail address needs to have been validated.<br />For SMTP, this may not take effect depending on your mail server and settings, especially if using SMTPAuth (such as for GMail).', $this->textdomain ) ),
 			'from_name'	=> array( 'input' => 'text', 'default' => get_bloginfo('name'),
 				'label' => __( 'Sender name', $this->textdomain ),
-				'help' => __( 'Sets the From name for all outgoing messages. Leave blank to use the WordPress default. This value will be used even if you don\'t enable SMTP.', $this->textdomain ) ),	
+				'help' => __( 'Sets the From name for all outgoing messages. Leave blank to use the WordPress default. This value will be used even if you don\'t enable Amazon SES or SMTP.', $this->textdomain ) ),	
 			'use_dkim' => array( 'input' => 'checkbox', 'default' => false,
 				'label' => __( 'Use DKIM validation?', $this->textdomain ),
 				'help' => __( 'Clicking this requires you to enter your DKIM details below. Also you will need to set up your DNS DKIM record.', $this->textdomain )),
 			'dkim_domain' => array( 'input' => 'text', 
-				'label' => __( 'DKIM domain', $this->textdomain ),
+				'label' => __( 'DKIM domain', $this->textdomain ),  'default' => $userDomaini[1],
 				'help' => __( 'Set the DKIM domain to send from.', $this->textdomain ) ),
 			'dkim_private' => array( 'input' => 'text', 
-				'label' => __( 'Path to the DKIM private key', $this->textdomain ),
+				'label' => __( 'Path to the DKIM private key', $this->textdomain ),  'default' => '.htkeyprivate',
 				'help' => __( 'Set the path relative to the website root directory (exclude leading forward slash).', $this->textdomain ) ),
 			'dkim_selector' => array( 'input' => 'text', 
-				'label' => __( 'DKIM selector', $this->textdomain ),
+				'label' => __( 'DKIM selector', $this->textdomain ),  'default' => 'ses',
 				'help' => __( 'Set the DKIM selector for this key.', $this->textdomain ) ),
 			'dkim_passphrase' => array( 'input' => 'text',
 				'label' => __( 'DKIM key passphrase', $this->textdomain ),
@@ -170,7 +171,7 @@ class c2c_ConfigureAES_DKIM_SMTP extends C2C_Plugin_023 {
 			'smtp_pass'	=> array( 'input' => 'password', 'default' => '',
 				'label' => __( 'SMTP password', $this->textdomain ),
 				'help' => '' ),
-			'wordwrap' => array( 'input' => 'short_text', 'default' => '',
+			'wordwrap' => array( 'input' => 'short_text', 'default' => '55',
 				'label' => __( 'Wordwrap length', $this->textdomain ),
 				'help' => __( 'Sets word wrapping on the body of the message to a given number of characters.', $this->textdomain ) ),
 			'debug' => array( 'input' => 'checkbox', 'default' => false,
@@ -257,7 +258,7 @@ class c2c_ConfigureAES_DKIM_SMTP extends C2C_Plugin_023 {
 						jQuery('#smtp_auth').attr('checked', {$this->gmail_config['smtp_auth']});
 					jQuery('#smtp_secure').val('{$this->gmail_config['smtp_secure']}');
 					if (!jQuery('#smtp_user').val().match(/.+@gmail.com$/) ) {
-						jQuery('#smtp_user').val('USERNAME@gmail.com').focus().get(0).setSelectionRange(0,8);
+						jQuery('#smtp_user').val('your_name@gmail.com').focus().get(0).setSelectionRange(0,8);
 					}
 					alert('{$alert}');
 					return true;
