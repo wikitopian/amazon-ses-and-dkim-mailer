@@ -110,8 +110,7 @@ class c2c_ConfigureAES_DKIM_SMTP extends C2C_Plugin_023 {
 	public function load_config() {
 		$this->name      = __( 'Anatta Mailer', $this->textdomain );
 		$this->menu_name = __( 'Mail Settings', $this->textdomain );
-		$user = wp_get_current_user();
-                $userDomain = explode('@', $user->user_email);
+                $userDomain = explode("@", get_bloginfo('admin_email'));
 		$this->config = array(
 			'use_aws' => array( 'input' => 'checkbox', 'default' => false,
 				'label' => __( 'Send e-mail via Amazon SES?', $this->textdomain ),
@@ -132,7 +131,7 @@ class c2c_ConfigureAES_DKIM_SMTP extends C2C_Plugin_023 {
 				'label' => __( 'Use DKIM validation?', $this->textdomain ),
 				'help' => __( 'Clicking this requires you to enter your DKIM details below. Also you will need to set up your DNS DKIM record.', $this->textdomain )),
 			'dkim_domain' => array( 'input' => 'text', 
-				'label' => __( 'DKIM domain', $this->textdomain ),  'default' => $userDomaini[1],
+				'label' => __( 'DKIM domain', $this->textdomain ),  'default' => $userDomain[1],
 				'help' => __( 'Set the DKIM domain to send from.', $this->textdomain ) ),
 			'dkim_private' => array( 'input' => 'text', 
 				'label' => __( 'Path to the DKIM private key', $this->textdomain ),  'default' => '.htkeyprivate',
